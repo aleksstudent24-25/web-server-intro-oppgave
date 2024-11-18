@@ -26,23 +26,23 @@ class Library
     return loanedBooks;
   }
 
-  public Book? BorrowBook(string title)
+  public Book? BorrowBook(Guid id)
   {
     // Finn tilgjengelige bøker
     List<Book> availbleBooks = ListAvailableBooks();
     // Finn ut om vi har den spesifikke boke tilgjengelig
-    Book? book = availbleBooks.Find((book) => book.Title == title);
+    Book? book = availbleBooks.Find((book) => book.Id == id);
     book?.Borrow();
     // Return resultatet
     return book;
   }
 
-  public Book? ReturnBook(string title)
+  public Book? ReturnBook(Guid id)
   {
     // Finn tilgjengelige bøker
     List<Book> availbleBooks = ListLoanedBooks();
     // Finn ut om vi har den spesifikke boke tilgjengelig
-    Book? book = availbleBooks.Find((book) => book.Title == title);
+    Book? book = availbleBooks.Find((book) => book.Id == id);
     book?.Return();
     // Return resultatet
     return book;

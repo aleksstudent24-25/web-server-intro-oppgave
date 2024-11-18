@@ -22,7 +22,7 @@ app.MapGet("/book", () =>
 // URI (sti):  /
 app.MapPost("/book/borrow", (BookRequest request) =>
 {
-  Book? book = library.BorrowBook(request.Title);
+  Book? book = library.BorrowBook(request.Id);
 
   if (book == null)
   {
@@ -36,7 +36,7 @@ app.MapPost("/book/borrow", (BookRequest request) =>
 
 app.MapPost("/book/return", (BookRequest request) =>
 {
-Book? book = library.ReturnBook(request.Title);
+Book? book = library.ReturnBook(request.Id);
 
   if (book == null)
   {
