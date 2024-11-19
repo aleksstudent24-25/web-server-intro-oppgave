@@ -3,6 +3,8 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 Library library = new Library();
+AdminVerification adminKey = new AdminVerification(new Guid());
+User user = new User();
 
 // Legg til noen placholder bøker
 Book martian = new Book("Martian", "Jack Black", new DateTime(2002, 10, 10));
@@ -16,6 +18,16 @@ library.AddNewBook(foundation);
 app.MapGet("/book", () =>
 {
   return library.ListAvailableBooks();
+});
+
+app.MapGet("/adminaccess", () =>
+{
+  return adminKey.VerificationId;
+});
+
+app.MapPost("/updateuserid", (User newUser) =>
+{
+  return user.updateId(newUser.Id);
 });
 
 // Metode:     POST
@@ -36,7 +48,7 @@ app.MapPost("/book/borrow", (BookRequest request) =>
 
 app.MapPost("/book/return", (BookRequest request) =>
 {
-Book? book = library.ReturnBook(request.Id);
+  Book? book = library.ReturnBook(request.Id);
 
   if (book == null)
   {
@@ -47,6 +59,18 @@ Book? book = library.ReturnBook(request.Id);
     return Results.Ok(book);
   }
 
+});
+
+app.MapPost("/book/changestatus", (BookRequest request) =>
+{
+  if (user.Id == adminKey.VerificationId)
+  {
+    Book? book = library.ChangeBookStatus(request.Id);
+    if (book == null) return Results.NotFound();
+    else return Results.Ok(book);
+  }
+  else
+    return Results.NotFound();
 });
 
 // Start web serveren

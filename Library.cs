@@ -11,7 +11,6 @@ class Library
   {
     books.Add(newBook);
   }
-
   public List<Book> ListAvailableBooks()
   {
     // Filtrer ut alle utlånte bøker
@@ -20,7 +19,8 @@ class Library
     return availableBooks;
   }
 
-  public List<Book> ListLoanedBooks() {
+  public List<Book> ListLoanedBooks()
+  {
     List<Book> loanedBooks = books.FindAll((book) => book.IsBorrowed);
 
     return loanedBooks;
@@ -32,7 +32,7 @@ class Library
     List<Book> availbleBooks = ListAvailableBooks();
     // Finn ut om vi har den spesifikke boke tilgjengelig
     Book? book = availbleBooks.Find((book) => book.Id == id);
-    book?.Borrow();
+    book?.ChangeStatus();
     // Return resultatet
     return book;
   }
@@ -40,11 +40,18 @@ class Library
   public Book? ReturnBook(Guid id)
   {
     // Finn tilgjengelige bøker
-    List<Book> availbleBooks = ListLoanedBooks();
+    List<Book> availableBooks = ListLoanedBooks();
     // Finn ut om vi har den spesifikke boke tilgjengelig
-    Book? book = availbleBooks.Find((book) => book.Id == id);
-    book?.Return();
+    Book? book = availableBooks.Find((book) => book.Id == id);
+    book?.ChangeStatus();
     // Return resultatet
+    return book;
+  }
+
+  public Book? ChangeBookStatus(Guid id)
+  {
+    Book? book = books.Find((book) => book.Id == id);
+    book?.ChangeStatus();
     return book;
   }
 }

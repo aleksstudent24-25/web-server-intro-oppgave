@@ -8,21 +8,19 @@ class Book
   public bool IsBorrowed;
 
   public Book(string title, string author, DateTime firstPublished)
-{
-  Title = title;
-  Author = author;
-  FirstPublished = firstPublished;
-  IsBorrowed = false;
-  Id = Guid.NewGuid();
-}
+  {
+    Title = title;
+    Author = author;
+    FirstPublished = firstPublished;
+    IsBorrowed = false;
+    Id = Guid.NewGuid();
+  }
 
-public void Borrow()
-{
-  IsBorrowed = true;
-}
-
-public void Return()
-{
-  IsBorrowed = false;
-}
+  public void ChangeStatus()
+  {
+    if (!IsBorrowed)
+      IsBorrowed = true;
+    else
+      IsBorrowed = false;
+  }
 }
