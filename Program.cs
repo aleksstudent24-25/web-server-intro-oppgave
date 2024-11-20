@@ -3,8 +3,11 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 Library library = new Library();
-AdminVerification adminKey = new AdminVerification(new Guid());
-User user = new User();
+
+// Jeg la til en adminKey som så blir kopiert av en bruker som nå har admin rettigheter
+// til å endre lånestatus på bøker som de vil igjennom /changestatus
+AdminVerification adminKey = new AdminVerification(Guid.NewGuid());
+User user = new User(adminKey.VerificationId);
 
 // Legg til noen placholder bøker
 Book martian = new Book("Martian", "Jack Black", new DateTime(2002, 10, 10));
@@ -20,15 +23,10 @@ app.MapGet("/book", () =>
   return library.ListAvailableBooks();
 });
 
-app.MapGet("/adminaccess", () =>
-{
-  return adminKey.VerificationId;
-});
-
-app.MapPost("/updateuserid", (User newUser) =>
-{
-  return user.updateId(newUser.Id);
-});
+// app.MapGet("/adminaccess", () =>
+// {
+//   return adminKey.VerificationId;
+// });
 
 // Metode:     POST
 // URI (sti):  /
